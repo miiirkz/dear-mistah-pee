@@ -447,11 +447,10 @@
       nameInput.disabled = false;
       nameInput.placeholder = "Your name";
       setStatus("Your message was sent to Mistah Pee. 💙");
-    } catch {
-      setStatus("Sorry, we couldn't send that. Please try again in a moment.", true);
-    } finally {
-      submitBtn.disabled = false;
-    }
+  } catch (err) {
+  console.error("Submit failed:", err);
+  setStatus(`Couldn't send: ${err?.code || err?.message || "unknown error"}`, true);
+}
   });
 
   /* ---------- Admin / adviser sign-in ---------- */
