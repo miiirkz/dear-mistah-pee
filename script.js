@@ -447,9 +447,9 @@
       nameInput.disabled = false;
       nameInput.placeholder = "Your name";
       setStatus("Your message was sent to Mistah Pee. 💙");
-  } catch (err) {
+ } catch (err) {
   console.error("Submit failed:", err);
-  setStatus(`Couldn't send: ${err?.code || err?.message || "unknown error"}`, true);
+  setStatus(`Couldn't send: ${(err && (err.code || err.message)) || "unknown error"}`, true);
 }
   });
 
@@ -530,13 +530,13 @@
       });
   }
 
-document.addEventListener("DOMContentLoaded", () => {
-  loginError.textContent = "";
-  if (loginDialog && typeof loginDialog.showModal === "function" && !loginDialog.open) {
-    try {
-      loginDialog.showModal();
-    } catch (e) {
-      console.error("Modal open failed:", e);
-    }
+// Show sign-in modal immediately on startup
+loginError.textContent = "";
+if (loginDialog && typeof loginDialog.showModal === "function" && !loginDialog.open) {
+  try {
+    loginDialog.showModal();
+  } catch (e) {
+    console.error("Modal open failed:", e);
   }
+}
 });
