@@ -171,13 +171,15 @@
       applyRole(null);
       return;
     }
-    let newRole = null;
+ console.log("SIGNED IN EMAIL:", user?.email);
     try {
       const { db, fsM } = fb;
       const snap = await fsM.getDoc(fsM.doc(db, "roles", (user.email || "").toLowerCase()));
       const value = snap.exists() ? snap.data().role : null;
       if (value === "admin" || value === "adviser") newRole = value;
-    } catch {
+         } catch (err) {
+      console.error("ROLE LOOKUP ERROR:", err);
+      setAuthStatus(`Role lookup error: ${err.code || err.message || err}`);
       newRole = null;
     }
     if (token !== authToken) return;
