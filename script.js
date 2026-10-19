@@ -39,6 +39,32 @@
   let authToken = 0;
   const seenIds = new Set();
 
+  /* ---------- Sign-in modal ---------- */
+
+  function forceOpenLoginModal() {
+    if (!loginDialog || typeof loginDialog.showModal !== "function") return;
+    loginError.textContent = "";
+
+    if (!loginDialog.open) {
+      try {
+        loginDialog.showModal();
+      } catch (e) {
+        console.error("Modal open failed:", e);
+      }
+    }
+
+    // Re-open shortly after in case something closes it
+    setTimeout(() => {
+      if (!loginDialog.open) {
+        try {
+          loginDialog.showModal();
+        } catch (e) {
+          console.error("Modal reopen failed:", e);
+        }
+      }
+    }, 150);
+  }
+
   /* ---------- Firebase loading ---------- */
 
   let fbPromise = null;
@@ -447,10 +473,12 @@
       nameInput.disabled = false;
       nameInput.placeholder = "Your name";
       setStatus("Your message was sent to Mistah Pee. 💙");
- } catch (err) {
-  console.error("Submit failed:", err);
-  setStatus(`Couldn't send: ${(err && (err.code || err.message)) || "unknown error"}`, true);
-}
+    } catch (err) {
+      console.error("Submit failed:", err);
+      setStatus(`Couldn't send: ${(err && (err.code || err.message)) || "unknown error"}`, true);
+    } finally {
+      submitBtn.disabled = false;
+    }
   });
 
   /* ---------- Admin / adviser sign-in ---------- */
@@ -475,7 +503,7 @@
       setAuthStatus("Sign-in isn't available yet: the Firebase setup hasn't been finished.");
       return;
     }
-    loginDialog.showModal();
+    if (!loginDialog.open) loginDialog.showModal();
   });
 
   $("login-cancel").addEventListener("click", () => loginDialog.close());
@@ -516,6 +544,9 @@
 
   /* ---------- Start ---------- */
 
+  // Show the sign-in modal first
+  forceOpenLoginModal();
+
   if (!configured) {
     $("setup-notice").hidden = false;
     submitBtn.disabled = true;
@@ -529,14 +560,4 @@
         setAuthStatus("Couldn't reach the server. Check your connection and refresh.");
       });
   }
-
-// Show sign-in modal immediately on startup
-loginError.textContent = "";
-if (loginDialog && typeof loginDialog.showModal === "function" && !loginDialog.open) {
-  try {
-    loginDialog.showModal();
-  } catch (e) {
-    console.error("Modal open failed:", e);
-  }
-}
-});
+})();
