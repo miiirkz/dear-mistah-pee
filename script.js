@@ -530,4 +530,11 @@
         setAuthStatus("Couldn't reach the server. Check your connection and refresh.");
       });
   }
+
+  window.addEventListener("load", () => {
+    loginError.textContent = "";
+    if (loginDialog && !loginDialog.open && loginDialog.showModal) {
+      loginDialog.showModal();
+    }
+  });
 })();
