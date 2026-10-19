@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dear, Mistah Pee</title>
+    <meta
+      name="description"
+      content="A heartfelt collection of letters, memories, and messages from 12 - Joseph the Dreamer (SJTD) for Mistah Pee."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="sky" aria-hidden="true">
+      <div class="stars"></div>
+      <div class="stars stars-two"></div>
+      <div class="stars stars-three"></div>
+    </div>
+
+    <main class="container">
+      <header class="hero">
+        <p class="section-tag">12 - Joseph the Dreamer (SJTD)</p>
+        <h1>Dear, Mistah Pee</h1>
+        <p class="subtitle">
+          A little digital keepsake from your Creechas — filled with letters,
+          memories, and gratitude as we begin a new semester.
+        </p>
+      </header>
+
+      <section class="card intro-card">
+        <h2>For our beloved former adviser</h2>
+        <p>
+          Thank you for the kindness, patience, and guidance you shared with us.
+          This space is made with love so you can revisit our words whenever you
+          miss us the way we miss you.
+        </p>
+      </section>
+
+      <section class="card form-card" id="write-letter">
+        <h2>Write a letter or memory</h2>
+        <p class="form-note">
+          You can sign your name or send it anonymously. We'll keep it sincere,
+          respectful, and full of heart.
+        </p>
+
+        <form id="letter-form" class="letter-form" novalidate>
+          <div class="field-row">
+            <label for="entry-type">I want to share a</label>
+            <select id="entry-type" name="entryType" required>
+              <option value="Letter">Letter</option>
+              <option value="Memory">Memory</option>
+              <option value="Message">Message</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label for="sender-name">Name</label>
+            <input
+              id="sender-name"
+              name="senderName"
+              type="text"
+              maxlength="50"
+              placeholder="Your name"
+            />
+          </div>
+
+          <label class="checkbox-row" for="anonymous-toggle">
+            <input id="anonymous-toggle" name="anonymous" type="checkbox" />
+            <span>Send anonymously</span>
+          </label>
+
+          <div class="field-row">
+            <label for="message-text">Your words</label>
+            <textarea
+              id="message-text"
+              name="message"
+              rows="6"
+              maxlength="1200"
+              placeholder="Write your letter here..."
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn">Add to keepsake</button>
+          <p id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="card wall-card">
+        <div class="wall-header">
+          <h2>Letters Wall</h2>
+          <div class="filters" role="group" aria-label="Filter entries">
+            <button type="button" data-filter="All" class="filter-btn active">
+              All
+            </button>
+            <button type="button" data-filter="Letter" class="filter-btn">
+              Letters
+            </button>
+            <button type="button" data-filter="Memory" class="filter-btn">
+              Memories
+            </button>
+            <button type="button" data-filter="Message" class="filter-btn">
+              Messages
+            </button>
+          </div>
+        </div>
+        <div id="letters-wall" class="letters-wall"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Made with love by your Creechas, 12 - Joseph the Dreamer (SJTD).</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
