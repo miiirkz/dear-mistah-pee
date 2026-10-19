@@ -1,19 +1,16 @@
-/*
-  ============================================================
-  FIREBASE CONFIG  —  FILL THIS IN (see README.md, step 3)
-  ============================================================
-  Replace every value that says YOUR_... with the values from
-  Firebase console > Project settings > Your apps > Web app.
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-  This web config is NOT a secret (it is public by design).
-  Letters are protected by the rules in firestore.rules, not by
-  hiding this file. Never put passwords or service-account keys here.
-*/
-window.FIREBASE_CONFIG = {
+const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  authDomain: "dear-mistah-pee.firebaseapp.com",
+  projectId: "dear-mistah-pee",
+  storageBucket: "dear-mistah-pee.firebasestorage.app",
+  messagingSenderId: "117833056276",
+  appId: "1:117833056276:web:effbea4660493fcedba701"
 };
+
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
