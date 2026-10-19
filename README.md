@@ -5,7 +5,10 @@ A heartfelt digital keepsake from **12 - Joseph the Dreamer (SJTD)** for our bel
 ## What it includes
 - Dreamy dark-blue gradient background
 - Tiny glowing stars with soft motion
-- Letter wall with filters (Letters, Memories, Messages)
+- Letters wall of blue envelopes with filters (Letters, Memories, Messages)
+- Tap/click an envelope to open the letter on star-cloud paper (Escape or ✕ closes it)
+- Navigate letters with swipe left/right, on-screen arrows, or the ←/→ keys (loops at the ends)
+- Respects reduced-motion preferences
 - Submission form with optional anonymous posting
 - Cozy, personal tone and minimal decoration
 
