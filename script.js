@@ -158,8 +158,9 @@
         });
         renderWall();
       },
-      () => {
-        setAuthStatus("Couldn't load the letters. Please try again later.");
+      (err) => {
+        console.error("Letters listener error:", err);
+        setAuthStatus(`Couldn't load the letters: ${err.code || err.message || err}`);
       }
     );
   }
@@ -171,17 +172,22 @@
       applyRole(null);
       return;
     }
- console.log("SIGNED IN EMAIL:", user?.email);
+
+    console.log("SIGNED IN EMAIL:", user.email);
+
+    let newRole = null;
     try {
       const { db, fsM } = fb;
       const snap = await fsM.getDoc(fsM.doc(db, "roles", (user.email || "").toLowerCase()));
       const value = snap.exists() ? snap.data().role : null;
+      console.log("ROLE DOC EXISTS:", snap.exists(), "ROLE VALUE:", value);
       if (value === "admin" || value === "adviser") newRole = value;
-         } catch (err) {
+    } catch (err) {
       console.error("ROLE LOOKUP ERROR:", err);
       setAuthStatus(`Role lookup error: ${err.code || err.message || err}`);
       newRole = null;
     }
+
     if (token !== authToken) return;
     if (newRole) {
       setAuthStatus("");
@@ -189,7 +195,9 @@
       startListening();
     } else {
       applyRole(null);
-      setAuthStatus("This account isn't on the admin/adviser list, so it can't view letters.");
+      if (!authStatus.textContent) {
+        setAuthStatus("This account isn't on the admin/adviser list, so it can't view letters.");
+      }
       try {
         await fb.authM.signOut(fb.auth);
       } catch {
@@ -281,7 +289,6 @@
   /* ---------- Viewer ---------- */
 
   const viewer = $("letter-viewer");
-  const viewerPaper = $("viewer-paper");
   const viewerPrev = $("viewer-prev");
   const viewerNext = $("viewer-next");
   const viewerClose = $("viewer-close");
@@ -320,10 +327,8 @@
     const idx = visibleEntries.findIndex((e) => e.id === currentId);
     if (idx === -1) {
       showLetter(Math.min(currentIndex, visibleEntries.length - 1));
-    } else if (idx !== currentIndex) {
-      currentIndex = idx;
-      $("viewer-count").textContent = `${idx + 1} of ${visibleEntries.length}`;
     } else {
+      currentIndex = idx;
       $("viewer-count").textContent = `${idx + 1} of ${visibleEntries.length}`;
     }
     viewerPrev.hidden = viewerNext.hidden = visibleEntries.length < 2;
@@ -496,7 +501,7 @@
     ) {
       return "That email or password didn't work.";
     }
-    return "Couldn't sign in. Please try again.";
+    return `Couldn't sign in (${code || "unknown error"}). Please try again.`;
   }
 
   signinLink.addEventListener("click", () => {
