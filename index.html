@@ -118,6 +118,29 @@
       <p>Made with love by your Creechas, 12 - Joseph the Dreamer (SJTD).</p>
     </footer>
 
+    <div id="letter-viewer" class="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
+      <div class="viewer-backdrop" data-close></div>
+      <div class="viewer-stage">
+        <button type="button" class="viewer-close" id="viewer-close" aria-label="Close letter">&times;</button>
+        <div class="viewer-row">
+          <button type="button" class="viewer-nav" id="viewer-prev" aria-label="Previous letter">&#8249;</button>
+          <div class="envelope-open" aria-hidden="true"><span class="open-flap"></span></div>
+          <article class="paper" id="viewer-paper">
+            <svg class="paper-star paper-star-a" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z"/></svg>
+            <svg class="paper-star paper-star-b" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z"/></svg>
+            <svg class="paper-star paper-star-c" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z"/></svg>
+            <div class="paper-inner">
+              <p class="paper-type" id="viewer-title"></p>
+              <p class="paper-message" id="viewer-message"></p>
+              <p class="paper-meta" id="viewer-meta"></p>
+              <p class="paper-count" id="viewer-count" aria-live="polite"></p>
+            </div>
+          </article>
+          <button type="button" class="viewer-nav" id="viewer-next" aria-label="Next letter">&#8250;</button>
+        </div>
+      </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
