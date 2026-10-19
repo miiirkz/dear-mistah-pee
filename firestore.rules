@@ -1,0 +1,51 @@
+rules_version = '2';
+
+// Paste this whole file into Firebase console > Firestore Database > Rules > Publish.
+//
+// Roles live in the "roles" collection. Each document's ID is a person's
+// lowercase Google/email address and it has one field:  role = "admin" or "adviser".
+// Documents can only be created in the Firebase console (nobody can write them from the website).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Signed-in AND email verified (Google sign-in always is) -> look up their role.
+    function role() {
+      return request.auth != null
+        && request.auth.token.get('email_verified', false) == true
+        && request.auth.token.get('email', '') != ''
+        ? get(/databases/$(database)/documents/roles/$(request.auth.token.email.lower())).data.get('role', 'none')
+        : 'none';
+    }
+
+    function isAdmin()   { return role() == 'admin'; }
+    function isAdviser() { return role() == 'adviser'; }
+
+    function validLetter(d) {
+      return d.keys().hasOnly(['type', 'sender', 'message', 'createdAt'])
+        && d.keys().hasAll(['type', 'sender', 'message', 'createdAt'])
+        && d.type in ['Letter', 'Memory', 'Message']
+        && d.sender is string && d.sender.size() >= 1 && d.sender.size() <= 50
+        && d.message is string && d.message.size() >= 1 && d.message.size() <= 1200
+        && d.createdAt == request.time;
+    }
+
+    match /letters/{letterId} {
+      // Students (anonymous sign-in) can ONLY create. They cannot read, list, update or delete.
+      allow create: if request.auth != null && validLetter(request.resource.data);
+      // Admin and adviser can read everything.
+      allow get, list: if isAdmin() || isAdviser();
+      // Only the admin can delete. Nobody can edit.
+      allow delete: if isAdmin();
+      allow update: if false;
+    }
+
+    match /roles/{email} {
+      // A person may read only their own role document (so the site knows what to show).
+      allow get: if request.auth != null
+        && request.auth.token.get('email_verified', false) == true
+        && request.auth.token.get('email', '') != ''
+        && request.auth.token.email.lower() == email;
+      allow list, write: if false;
+    }
+  }
+}
