@@ -531,10 +531,13 @@
       });
   }
 
-  window.addEventListener("load", () => {
-    loginError.textContent = "";
-    if (loginDialog && !loginDialog.open && loginDialog.showModal) {
+document.addEventListener("DOMContentLoaded", () => {
+  loginError.textContent = "";
+  if (loginDialog && typeof loginDialog.showModal === "function" && !loginDialog.open) {
+    try {
       loginDialog.showModal();
+    } catch (e) {
+      console.error("Modal open failed:", e);
     }
-  });
-})();
+  }
+});
